@@ -1,0 +1,106 @@
+# 🗂️ Farm Valley - Git Ignore
+
+# ====================================
+# ARQUIVOS COMPILADOS
+# ====================================
+build/
+*.class
+
+# ====================================
+# ARQUIVOS TEMPORÁRIOS
+# ====================================
+temp/
+extracted_sprites/
+extracted_tiles/
+*.log
+*.tmp
+
+# ====================================
+# BACKUPS
+# ====================================
+backup_*/
+*.bak
+*~
+
+# ====================================
+# IDEs
+# ====================================
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+
+# ====================================
+# SISTEMA OPERACIONAL
+# ====================================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+
+# ====================================
+# JAVA
+# ====================================
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+
+# ====================================
+# ASSETS (OPCIONAL)
+# ====================================
+# Descomente se quiser ignorar assets temporários
+
+# temp/extracted_sprites/
+# temp/extracted_tiles/
+# assets/sounds/  (se estiver vazio)
+
+# ====================================
+# DOCUMENTAÇÃO TEMPORÁRIA
+# ====================================
+# docs/temp/
+*.md~
+
+# ====================================
+# RELEASES (OPCIONAL)
+# ====================================
+# Descomente se releases ficarem muito grandes
+# releases/*.jar
+# releases/*.exe
+

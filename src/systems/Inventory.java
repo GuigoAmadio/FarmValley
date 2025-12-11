@@ -183,6 +183,36 @@ public class Inventory {
     }
     
     /**
+     * Alias para countItem - conta quantos itens de um tipo existem
+     */
+    public int getItemCount(ItemType type) {
+        return countItem(type);
+    }
+    
+    /**
+     * Verifica se é possível adicionar um item ao inventário
+     */
+    public boolean canAddItem(ItemType type, int quantity) {
+        // Se tem slot vazio, pode adicionar
+        if (findEmptySlot() != -1) {
+            return true;
+        }
+        
+        // Verificar se pode empilhar em slots existentes
+        if (type.isStackable()) {
+            int spaceAvailable = 0;
+            for (int i = 0; i < size; i++) {
+                if (slots[i] != null && slots[i].getType() == type) {
+                    spaceAvailable += slots[i].getMaxStack() - slots[i].getQuantity();
+                }
+            }
+            return spaceAvailable >= quantity;
+        }
+        
+        return false;
+    }
+    
+    /**
      * Verifica se tem pelo menos X de um item
      */
     public boolean hasItem(ItemType type, int quantity) {

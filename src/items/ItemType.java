@@ -33,6 +33,8 @@ public enum ItemType {
     // ===== CONSUMÍVEIS =====
     BREAD("Pão", "Restaura 20 de energia", "icons/bread.png", true, 30, 20),
     APPLE("Maçã", "Restaura 10 de energia", "icons/apple.png", true, 15, 50),
+    ENERGY_POTION("Poção de Energia", "Restaura 50 de energia", "icons/potion_energy.png", true, 50, 20),
+    HEALTH_POTION("Poção de Vida", "Restaura 30 de vida", "icons/potion_health.png", true, 75, 20),
     
     // ===== ESPECIAIS =====
     GOLD_COIN("Moeda de Ouro", "Moeda do jogo", "icons/coin.png", true, 1, 9999);
@@ -89,6 +91,14 @@ public enum ItemType {
     
     public boolean isTool() {
         return this == AXE || this == PICKAXE || this == HOE || this == WATERING_CAN;
+    }
+    
+    public boolean isConsumable() {
+        return this == BREAD || this == APPLE || this == ENERGY_POTION || this == HEALTH_POTION;
+    }
+    
+    public boolean isPotion() {
+        return this == ENERGY_POTION || this == HEALTH_POTION;
     }
     
     public boolean isResource() {

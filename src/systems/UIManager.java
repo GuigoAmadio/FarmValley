@@ -18,7 +18,10 @@ import utils.SpriteLoader;
  */
 public class UIManager {
     private boolean inventoryOpen;
+    private boolean shopOpen;
+    private String shopMerchantName;
     private int hoveredSlot;
+    private int shopSelectedTab; // 0 = comprar, 1 = vender
     private Image inventoryBackground;
     private Image slotFrame;
     
@@ -32,6 +35,9 @@ public class UIManager {
     
     public UIManager() {
         this.inventoryOpen = false;
+        this.shopOpen = false;
+        this.shopMerchantName = "";
+        this.shopSelectedTab = 0;
         this.hoveredSlot = -1;
         loadUISprites();
     }
@@ -64,6 +70,30 @@ public class UIManager {
         this.hoveredSlot = slot;
     }
     
+    // ===== LOJA =====
+    
+    public boolean isShopOpen() {
+        return shopOpen;
+    }
+    
+    public void openShop(String merchantName) {
+        this.shopOpen = true;
+        this.shopMerchantName = merchantName;
+        this.shopSelectedTab = 0;
+    }
+    
+    public void closeShop() {
+        this.shopOpen = false;
+    }
+    
+    public void toggleShopTab() {
+        shopSelectedTab = (shopSelectedTab + 1) % 2;
+    }
+    
+    public int getShopSelectedTab() {
+        return shopSelectedTab;
+    }
+    
     // ===== RENDERIZAÇÃO =====
     
     /**
@@ -73,7 +103,7 @@ public class UIManager {
         int hotBarSlots = 6;
         int hotBarWidth = hotBarSlots * (SLOT_SIZE + SLOT_PADDING) + SLOT_PADDING;
         int hotBarHeight = SLOT_SIZE + SLOT_PADDING * 2;
-        int hotBarX = (canvasWidth - hotBarWidth) / 2;
+        int hotBarX = (canvasWidth - hotBarWidth) / 2; // Centralizado
         int hotBarY = canvasHeight - hotBarHeight - 10;
         
         // Sombra da hot bar
@@ -192,6 +222,121 @@ public class UIManager {
         
         // Instruções
         drawInventoryInstructions(gc, invX, invY + INVENTORY_HEIGHT - 40);
+    }
+    
+    /**
+     * Renderiza a interface da loja
+     */
+    public void renderShop(GraphicsContext gc, Inventory inventory, ShopSystem shop, int canvasWidth, int canvasHeight) {
+        if (!shopOpen) return;
+        
+        int shopWidth = 500;
+        int shopHeight = 400;
+        int shopX = (canvasWidth - shopWidth) / 2;
+        int shopY = (canvasHeight - shopHeight) / 2;
+        
+        // Fundo escurecido
+        gc.setFill(Color.rgb(0, 0, 0, 0.8));
+        gc.fillRect(0, 0, canvasWidth, canvasHeight);
+        
+        // Painel da loja
+        gc.setFill(Color.rgb(35, 30, 25));
+        gc.fillRoundRect(shopX, shopY, shopWidth, shopHeight, 12, 12);
+        
+        // Borda dourada
+        gc.setStroke(Color.rgb(180, 140, 60));
+        gc.setLineWidth(3);
+        gc.strokeRoundRect(shopX, shopY, shopWidth, shopHeight, 12, 12);
+        
+        // Título
+        gc.setFill(Color.rgb(255, 215, 0));
+        gc.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText("🛒 " + shopMerchantName + " - Loja", shopX + shopWidth/2, shopY + 30);
+        
+        // Abas
+        int tabWidth = 120;
+        int tabHeight = 35;
+        int tabY = shopY + 50;
+        
+        // Aba Comprar
+        gc.setFill(shopSelectedTab == 0 ? Color.rgb(60, 120, 60) : Color.rgb(50, 50, 55));
+        gc.fillRoundRect(shopX + 30, tabY, tabWidth, tabHeight, 8, 8);
+        gc.setFill(Color.WHITE);
+        gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        gc.fillText("COMPRAR", shopX + 30 + tabWidth/2, tabY + 23);
+        
+        // Aba Vender
+        gc.setFill(shopSelectedTab == 1 ? Color.rgb(60, 120, 60) : Color.rgb(50, 50, 55));
+        gc.fillRoundRect(shopX + 160, tabY, tabWidth, tabHeight, 8, 8);
+        gc.setFill(Color.WHITE);
+        gc.fillText("VENDER", shopX + 160 + tabWidth/2, tabY + 23);
+        
+        // Conteúdo baseado na aba
+        int contentY = tabY + 50;
+        gc.setFont(Font.font("Arial", 12));
+        gc.setTextAlign(TextAlignment.LEFT);
+        
+        if (shopSelectedTab == 0) {
+            // COMPRAR - lista de itens para comprar
+            String[][] buyItems = {
+                {"Semente de Tomate", "15", "1"},
+                {"Semente de Milho", "20", "2"},
+                {"Poção de Vida", "50", "3"},
+                {"Poção de Energia", "30", "4"}
+            };
+            
+            gc.setFill(Color.rgb(200, 200, 200));
+            gc.fillText("Pressione o número para comprar:", shopX + 30, contentY);
+            contentY += 25;
+            
+            for (String[] item : buyItems) {
+                gc.setFill(Color.WHITE);
+                gc.fillText("[" + item[2] + "] " + item[0], shopX + 40, contentY);
+                gc.setFill(Color.GOLD);
+                gc.fillText("$" + item[1], shopX + 280, contentY);
+                contentY += 28;
+            }
+        } else {
+            // VENDER - itens do inventário
+            gc.setFill(Color.rgb(200, 200, 200));
+            gc.fillText("Seus itens para vender:", shopX + 30, contentY);
+            contentY += 25;
+            
+            ItemType[] sellables = {ItemType.TOMATO, ItemType.CORN, ItemType.WOOD, ItemType.STONE};
+            int idx = 1;
+            for (ItemType type : sellables) {
+                int count = inventory.getItemCount(type);
+                if (count > 0) {
+                    gc.setFill(Color.WHITE);
+                    gc.fillText("[" + idx + "] " + type.getDisplayName() + " x" + count, shopX + 40, contentY);
+                    gc.setFill(Color.GOLD);
+                    int price = (int)(type.getValue() * 0.7); // 70% do valor
+                    gc.fillText("$" + price + " cada", shopX + 280, contentY);
+                    contentY += 28;
+                }
+                idx++;
+            }
+            
+            if (contentY == tabY + 75) {
+                gc.setFill(Color.rgb(150, 150, 150));
+                gc.fillText("Nenhum item para vender", shopX + 40, contentY);
+            }
+        }
+        
+        // Dinheiro do jogador
+        gc.setFill(Color.rgb(50, 50, 55));
+        gc.fillRoundRect(shopX + shopWidth - 150, shopY + shopHeight - 50, 130, 35, 8, 8);
+        gc.setFill(Color.GOLD);
+        gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        gc.setTextAlign(TextAlignment.CENTER);
+        // O dinheiro será passado como parâmetro
+        
+        // Instruções
+        gc.setFill(Color.rgb(150, 150, 150));
+        gc.setFont(Font.font("Arial", 11));
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText("TAB: Trocar aba | ESC: Fechar | 1-6: Comprar/Vender", shopX + shopWidth/2, shopY + shopHeight - 15);
     }
     
     /**

@@ -25,38 +25,52 @@ public class DecorationManager {
     
     /**
      * Gera decorações aleatórias no mapa
+     * Quantidade escalona com tamanho do mapa
      */
     public void generateDecorations(Farm farm) {
         int width = farm.getWidth();
         int height = farm.getHeight();
+        int mapArea = width * height;
         
         // Limpar decorações existentes
         decorations.clear();
         
+        // Calcular quantidade baseada no tamanho do mapa - MUITO DENSO!
+        // Para mapa 150x150 = 22500, queremos um mundo bem populado
+        int treeCount = Math.max(200, mapArea / 35);      // ~640 árvores para 150x150
+        int bushCount = Math.max(300, mapArea / 20);      // ~1125 arbustos para 150x150
+        int ruinCount = Math.max(15, mapArea / 1200);     // ~18 ruínas para 150x150
+        
+        System.out.println("🌳 Gerando decorações para mapa " + width + "x" + height + "...");
+        System.out.println("   - Árvores: " + treeCount);
+        System.out.println("   - Arbustos: " + bushCount);
+        System.out.println("   - Ruínas: " + ruinCount);
+        
         // Gerar árvores (esparsas)
-        generateTrees(farm, width, height, 15); // 15 árvores
+        generateTrees(farm, width, height, treeCount);
         
         // Gerar arbustos (mais densos)
-        generateBushes(farm, width, height, 30); // 30 arbustos
+        generateBushes(farm, width, height, bushCount);
         
         // Gerar algumas ruínas (raras)
-        generateRuins(farm, width, height, 3); // 3 ruínas
+        generateRuins(farm, width, height, ruinCount);
         
-        System.out.println("✓ Decorações geradas: " + decorations.size() + " objetos");
+        System.out.println("✅ Decorações geradas: " + decorations.size() + " objetos");
     }
     
     /**
-     * Gera árvores aleatórias
+     * Gera árvores aleatórias com distribuição mais natural
      */
     private void generateTrees(Farm farm, int width, int height, int count) {
         int attempts = 0;
-        int maxAttempts = count * 10;
+        int maxAttempts = count * 15; // Mais tentativas para mais sucesso
+        int generated = 0;
         
-        while (decorations.stream().filter(d -> d.getLayer() == 3).count() < count && attempts < maxAttempts) {
+        while (generated < count && attempts < maxAttempts) {
             attempts++;
             
-            int x = random.nextInt(width);
-            int y = random.nextInt(height);
+            int x = random.nextInt(width - 4) + 2;
+            int y = random.nextInt(height - 4) + 2;
             
             // Obter tipo da árvore antes de verificar posição
             DecorationType treeType = DecorationType.getRandomTree();
@@ -64,22 +78,37 @@ public class DecorationManager {
             // Verificar se a posição é válida (incluindo toda a área ocupada)
             if (isValidPosition(farm, x, y, false, treeType)) {
                 decorations.add(new Decoration(x, y, treeType));
+                generated++;
+                
+                // Chance de criar um pequeno grupo de árvores (floresta)
+                if (random.nextDouble() < 0.3) { // 30% chance de cluster
+                    for (int i = 0; i < random.nextInt(3) + 1; i++) {
+                        int clusterX = x + random.nextInt(5) - 2;
+                        int clusterY = y + random.nextInt(5) - 2;
+                        DecorationType clusterTree = DecorationType.getRandomTree();
+                        if (isValidPosition(farm, clusterX, clusterY, false, clusterTree)) {
+                            decorations.add(new Decoration(clusterX, clusterY, clusterTree));
+                            generated++;
+                        }
+                    }
+                }
             }
         }
     }
     
     /**
-     * Gera arbustos aleatórios
+     * Gera arbustos aleatórios com distribuição mais densa
      */
     private void generateBushes(Farm farm, int width, int height, int count) {
         int attempts = 0;
-        int maxAttempts = count * 10;
+        int maxAttempts = count * 12;
+        int generated = 0;
         
-        while (decorations.stream().filter(d -> d.getLayer() == 1).count() < count && attempts < maxAttempts) {
+        while (generated < count && attempts < maxAttempts) {
             attempts++;
             
-            int x = random.nextInt(width);
-            int y = random.nextInt(height);
+            int x = random.nextInt(width - 4) + 2;
+            int y = random.nextInt(height - 4) + 2;
             
             // Obter tipo do arbusto antes de verificar posição
             DecorationType bushType = DecorationType.getRandomBush();
@@ -87,6 +116,20 @@ public class DecorationManager {
             // Verificar se a posição é válida (incluindo toda a área ocupada)
             if (isValidPosition(farm, x, y, true, bushType)) {
                 decorations.add(new Decoration(x, y, bushType));
+                generated++;
+                
+                // Chance maior de criar grupos de arbustos
+                if (random.nextDouble() < 0.4) { // 40% chance de cluster
+                    for (int i = 0; i < random.nextInt(4) + 1; i++) {
+                        int clusterX = x + random.nextInt(3) - 1;
+                        int clusterY = y + random.nextInt(3) - 1;
+                        DecorationType clusterBush = DecorationType.getRandomBush();
+                        if (isValidPosition(farm, clusterX, clusterY, true, clusterBush)) {
+                            decorations.add(new Decoration(clusterX, clusterY, clusterBush));
+                            generated++;
+                        }
+                    }
+                }
             }
         }
     }

@@ -1,0 +1,106 @@
+{
+  "greetings": {
+    "merchant": [
+      "Olá, viajante! Veja minhas mercadorias!",
+      "Bem-vindo à minha loja!",
+      "Preços especiais só hoje!",
+      "Ah, um cliente! Entre, entre!"
+    ],
+    "farmer": [
+      "Bom dia, vizinho!",
+      "Oi! O tempo está bom para plantio!",
+      "Olá! Já cuidou das suas plantações?",
+      "E aí! Como vai a colheita?"
+    ],
+    "villager": [
+      "Olá! Seja bem-vindo!",
+      "Oi! Você é novo por aqui?",
+      "Bem-vindo à nossa vila!",
+      "Olá, amigo!"
+    ],
+    "wanderer": [
+      "Hmm... Outro viajante...",
+      "Olá, companheiro de estrada.",
+      "Saudações, estranho.",
+      "Ah, olá! Também está de passagem?"
+    ]
+  },
+  "dialogues": {
+    "merchant": [
+      "Sementes frescas! Direto da capital!",
+      "Compre agora e ganhe desconto!",
+      "Ferramentas de qualidade, garantia de 10 anos!",
+      "Vendo de tudo: sementes, ferramentas, e mais!",
+      "Negócio fechado é negócio fechado!",
+      "Volte sempre! Clientes fiéis ganham desconto!"
+    ],
+    "farmer": [
+      "A chuva deve vir essa semana...",
+      "Milho precisa de muito sol, sabia?",
+      "Tomates crescem rápido no verão.",
+      "Cuidado com as pragas na plantação!",
+      "Terra boa faz toda a diferença.",
+      "Plante cenouras no outono, são as melhores!"
+    ],
+    "villager": [
+      "Que dia lindo, não acha?",
+      "A vida no campo é tranquila.",
+      "Você já conheceu todo mundo da vila?",
+      "Ouvi dizer que tem monstros na floresta...",
+      "O padeiro faz o melhor pão da região!",
+      "Sinto falta da cidade às vezes..."
+    ],
+    "wanderer": [
+      "Já viajei por muitas terras...",
+      "Este lugar tem um ar diferente.",
+      "Procuro por tesouros escondidos.",
+      "As estradas estão perigosas ultimamente.",
+      "Você não parece daqui.",
+      "Já ouviu falar das ruínas antigas?"
+    ]
+  },
+  "tips": [
+    "💡 Dica: Pressione T para arar a terra!",
+    "💡 Dica: Use P para plantar sementes!",
+    "💡 Dica: Pressione H para colher quando maduro!",
+    "💡 Dica: Dormir (Z) recupera energia!",
+    "💡 Dica: Pressione C para trocar de semente!",
+    "💡 Dica: Cada planta tem seu tempo de crescimento!",
+    "💡 Dica: Plantas de qualidade valem mais!",
+    "💡 Dica: Subir de nível melhora suas colheitas!",
+    "💡 Dica: Cuidado com os monstros à noite!",
+    "💡 Dica: NPCs têm informações úteis!"
+  ],
+  "gossip": [
+    "Psiu... Ouvi dizer que tem um tesouro nas ruínas!",
+    "Você sabia que o comerciante veio da capital?",
+    "Dizem que a floresta é mal-assombrada...",
+    "O fazendeiro José ganhou o concurso de abóboras!",
+    "Parece que viram um javali gigante por aqui...",
+    "O viajante conta histórias muito estranhas...",
+    "Ouvi que tem uma caverna secreta no norte!"
+  ],
+  "stories": [
+    "Há muito tempo, esta terra era governada por um rei...",
+    "Meu avô contava sobre dragões nestas montanhas.",
+    "Dizem que um mago construiu estas ruínas.",
+    "Eu vi coisas que você não acreditaria...",
+    "Esta terra guarda muitos segredos.",
+    "As lendas falam de um artefato perdido..."
+  ],
+  "warnings": [
+    "⚠️ Cuidado! Slimes podem ser venenosos!",
+    "⚠️ Goblins atacam em grupo, fique atento!",
+    "⚠️ Esqueletos são mais fortes à noite!",
+    "⚠️ Javalis são muito perigosos, evite-os!",
+    "⚠️ Não vá para longe sem estar preparado!",
+    "⚠️ Sempre tenha energia para fugir!"
+  ],
+  "farewells": [
+    "Até mais!",
+    "Boa sorte!",
+    "Volte sempre!",
+    "Cuide-se!",
+    "Até a próxima!"
+  ]
+}
